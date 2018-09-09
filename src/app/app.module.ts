@@ -7,7 +7,12 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './shared/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginService } from './login/login.service';
 
+//nambahin token setiap request http
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from "./auth/token.interceptor";
+// import { AuthGuardService } from "./auth/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -22,7 +27,13 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
 
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
